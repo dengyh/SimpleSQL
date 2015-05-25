@@ -11,11 +11,11 @@ using namespace std;
  }
 
  Database::Database() {
-    // readFromFile();
+    readFromFile();
  }
 
  Database::~Database() {
-    // writeToFile();
+    writeToFile();
  }
 
  void Database::readFromFile() {
@@ -177,7 +177,7 @@ bool Database::create(string tableName, vector<string> fields,
     }
     tables[tableName] = tempTable;
     message = "Create table '" + tableName + "' succeed!";
-    // writeToFile();
+    writeToFile();
     return true;
 }
 
@@ -219,7 +219,7 @@ bool Database::insert(string tableName, vector<string> fields,
     }
     table.rows.push_back(tempRow);
     message = "insert value to table '" + tableName + "' succeed!";
-    // writeToFile();
+    writeToFile();
     return true;
 }
 
@@ -301,6 +301,6 @@ bool Database::deleteData(string tableName,
         }
     }
     message = "Delete OK, " + convertIntegerToString(total) + " rows affected."; 
-    // writeToFile();
+    writeToFile();
     return true;
 }
