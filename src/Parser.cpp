@@ -459,50 +459,76 @@ void Parser::work(vector<Node> tokenList, vector<string> input) {
     stack<string> parserStack;
     vector<Node> statement;
     parserStack.push("ssql_stmt");
+    set<int> debug;
     int index = 0;
-    while (!parserStack.empty() && index < tokenList.size()) {
+    debug.insert(1);
+    debug.insert(2);
+    while (debug.insert(3), !parserStack.empty() && index < tokenList.size()) {
         string symbol = parserStack.top();
+        debug.insert(4);
         if (symbol == tokenList[index].token) {
+            debug.insert(5);
             statement.push_back(tokenList[index]);
             parserStack.pop();
             index++;
             if (symbol == "SEM") {
                 string message;
                 bool succeed = false;
+                debug.insert(6);
                 if (statement.front().token == "CREATE") {
+                    debug.insert(7);
                     succeed = doCreateStatement(statement, message);
-                } else if (statement.front().token == "INSERT") {
+                } else if (debug.insert(8), statement.front().token == "INSERT") {
+                    debug.insert(9);
                     succeed = doInsertStatement(statement, message);
-                } else if (statement.front().token == "DELETE") {
+                } else if (debug.insert(10), statement.front().token == "DELETE") {
                     succeed = doDeleteStatement(statement, message);
-                } else if (statement.front().token == "SELECT") {
+                    debug.insert(11);
+                } else if (debug.insert(12), statement.front().token == "SELECT") {
+                    debug.insert(13);
                     succeed = doSelectStatement(statement, message);
                 }
+                debug.insert(14);
                 if (succeed) {
+                    debug.insert(15);
                     cout << message << endl << endl;
                 } else {
+                    debug.insert(16);
                     alertError(message, statement.front().row);
                 }
+                debug.inset(17);
                 statement.clear();
                 parserStack.push("ssql_stmt");
             }
-        } else if (grammar[symbol].isTerminalSymbol) {
+        } else if (debug.insert(18), grammar[symbol].isTerminalSymbol) {
             grammarError(tokenList[index], input);
+            debug.insert(19);
             errorRecovery(parserStack, statement, tokenList, index);
-        } else if (predictSet[symbol][tokenList[index].token].empty()) {
+        } else if (debug.insert(20), predictSet[symbol][tokenList[index].token].empty()) {
             grammarError(tokenList[index], input);
+            debug.insert(21);
             errorRecovery(parserStack, statement, tokenList, index);
         } else {
+
+            debug.insert(22);
             parserStack.pop();
             vector<string> expressions = predictSet[symbol][tokenList[index].token];
-            for (int i = expressions.size() - 1; i >= 0; i--) {
+            for (int i = expressions.size() - 1;debug.insert(23), i >= 0; i--) {
+                debug.insert(24);
                 if (expressions[i] != "EPSILON") {
+                    debug.insert(25);
                     parserStack.push(expressions[i]);
                 }
             }
         }
     }
+    debug.insert(26);
     if (!statement.empty()) {
+        debug.insert(27);
         alertError("Lack of words at the tail of the statement.", statement.front().row);
+    }
+    debug.insert(28);
+    for (set<int>::iterator it = debug.beign(); it != debug.end(); it++) {
+        cout << *it << "," << endl;
     }
 }
