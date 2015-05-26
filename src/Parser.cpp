@@ -496,7 +496,7 @@ void Parser::work(vector<Node> tokenList, vector<string> input) {
                     debug.insert(16);
                     alertError(message, statement.front().row);
                 }
-                debug.inset(17);
+                debug.insert(17);
                 statement.clear();
                 parserStack.push("ssql_stmt");
             }
@@ -528,7 +528,7 @@ void Parser::work(vector<Node> tokenList, vector<string> input) {
         alertError("Lack of words at the tail of the statement.", statement.front().row);
     }
     debug.insert(28);
-    for (set<int>::iterator it = debug.beign(); it != debug.end(); it++) {
+    for (set<int>::iterator it = debug.begin(); it != debug.end(); it++) {
         cout << *it << "," << endl;
     }
 }
