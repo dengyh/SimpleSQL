@@ -460,36 +460,38 @@ void Parser::work(vector<Node> tokenList, vector<string> input) {
     vector<Node> statement;
     parserStack.push("ssql_stmt");
     set<int> debug;
+    set<bool> conditions[20];
     int index = 0;
     debug.insert(1);
     debug.insert(2);
-    while (debug.insert(3), !parserStack.empty() && index < tokenList.size()) {
+    while (debug.insert(3), conditions[0].insert(!parserStack.empty() && index < tokenList.size()),
+    !parserStack.empty() && index < tokenList.size()) {
         string symbol = parserStack.top();
         debug.insert(4);
-        if (symbol == tokenList[index].token) {
+        if (conditions[1].insert(symbol == tokenList[index].token), symbol == tokenList[index].token) {
             debug.insert(5);
             statement.push_back(tokenList[index]);
             parserStack.pop();
             index++;
-            if (symbol == "SEM") {
+            if (conditions[2].insert(symbol == "SEM"), symbol == "SEM") {
                 string message;
                 bool succeed = false;
                 debug.insert(6);
-                if (statement.front().token == "CREATE") {
+                if (conditions[3].insert(statement.front().token == "CREATE"), statement.front().token == "CREATE") {
                     debug.insert(7);
                     succeed = doCreateStatement(statement, message);
-                } else if (debug.insert(8), statement.front().token == "INSERT") {
+                } else if (conditions[4].insert(statement.front().token == "INSERT"), debug.insert(8), statement.front().token == "INSERT") {
                     debug.insert(9);
                     succeed = doInsertStatement(statement, message);
-                } else if (debug.insert(10), statement.front().token == "DELETE") {
+                } else if (conditions[5].insert(statement.front().token == "DELETE"), debug.insert(10), statement.front().token == "DELETE") {
                     succeed = doDeleteStatement(statement, message);
                     debug.insert(11);
-                } else if (debug.insert(12), statement.front().token == "SELECT") {
+                } else if (conditions[6].insert(statement.front().token == "SELECT"), debug.insert(12), statement.front().token == "SELECT") {
                     debug.insert(13);
                     succeed = doSelectStatement(statement, message);
                 }
                 debug.insert(14);
-                if (succeed) {
+                if (conditions[7].insert(succeed), succeed) {
                     debug.insert(15);
                     cout << message << endl << endl;
                 } else {
@@ -500,22 +502,21 @@ void Parser::work(vector<Node> tokenList, vector<string> input) {
                 statement.clear();
                 parserStack.push("ssql_stmt");
             }
-        } else if (debug.insert(18), grammar[symbol].isTerminalSymbol) {
+        } else if (conditions[8].insert(grammar[symbol].isTerminalSymbol), debug.insert(18), grammar[symbol].isTerminalSymbol) {
             grammarError(tokenList[index], input);
             debug.insert(19);
             errorRecovery(parserStack, statement, tokenList, index);
-        } else if (debug.insert(20), predictSet[symbol][tokenList[index].token].empty()) {
+        } else if (conditions[9].insert(predictSet[symbol][tokenList[index].token].empty()), debug.insert(20), predictSet[symbol][tokenList[index].token].empty()) {
             grammarError(tokenList[index], input);
             debug.insert(21);
             errorRecovery(parserStack, statement, tokenList, index);
         } else {
-
             debug.insert(22);
             parserStack.pop();
             vector<string> expressions = predictSet[symbol][tokenList[index].token];
-            for (int i = expressions.size() - 1;debug.insert(23), i >= 0; i--) {
+            for (int i = expressions.size() - 1;debug.insert(23), conditions[10].insert(i>=0), i >= 0; i--) {
                 debug.insert(24);
-                if (expressions[i] != "EPSILON") {
+                if (conditions[11].insert(expressions[i] != "EPSILON"), expressions[i] != "EPSILON") {
                     debug.insert(25);
                     parserStack.push(expressions[i]);
                 }
@@ -523,7 +524,7 @@ void Parser::work(vector<Node> tokenList, vector<string> input) {
         }
     }
     debug.insert(26);
-    if (!statement.empty()) {
+    if (conditions[12].insert(!statement.empty()), !statement.empty()) {
         debug.insert(27);
         alertError("Lack of words at the tail of the statement.", statement.front().row);
     }
